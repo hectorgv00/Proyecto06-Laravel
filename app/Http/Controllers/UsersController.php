@@ -59,18 +59,13 @@ class UsersController extends Controller
 
 
 
-            // $payload = auth()->payload();
-
-            // $tokenId = $payload->get("sub");
 
             $user = auth()->user();
 
-            // dd($request->username);
 
             $steamUsername = ($request->steamUsername !== null) ? $request->steamUsername : $user->steamUsername;
             $username = ($request->username !== null) ? $request->username : $user->username;
 
-            // dd($username);
 
             $user->username = $username;
             $user->steamUsername = $steamUsername;
