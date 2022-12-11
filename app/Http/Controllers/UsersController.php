@@ -57,14 +57,24 @@ class UsersController extends Controller
 
         try {
 
+
+
             // $payload = auth()->payload();
 
             // $tokenId = $payload->get("sub");
 
             $user = auth()->user();
 
-            $user->username=$request->username;
-            $user->steamUsername=$request->steamUsername;
+            // dd($request->username);
+
+            $steamUsername = ($request->steamUsername !== null) ? $request->steamUsername : $user->steamUsername;
+            $username = ($request->username !== null) ? $request->username : $user->username;
+
+            // dd($username);
+
+            $user->username = $username;
+            $user->steamUsername = $steamUsername;
+
 
             $user->save();
 
@@ -73,9 +83,11 @@ class UsersController extends Controller
                 'message' => 'User updated successfully',
                 'data' => $user
             ], 200);
-
         } catch (\Throwable $th) {
-            //throw $th;
+            return response([
+                "success" => false,
+                "message" => "User could not be updated" . $th->getMessage()
+            ], 500);
         }
     }
 }
