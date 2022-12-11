@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("username");
             $table->string("steamUsername");
             $table->string("email");
+            $table->string("password");
             $table->timestamps();
         });
     }

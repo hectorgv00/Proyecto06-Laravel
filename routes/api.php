@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,19 @@ use Illuminate\Support\Facades\Route;
 
 // Users Routes
 
-Route::get("/users",[UsersController::class, "getAllUsers"]);
-Route::post('users/login',[UsersController::class, "logInAUser"]);
-Route::put('users/modify',[UsersController::class, "modifyAUser"]);
-Route::delete('users/modify',[UsersController::class, "deleteAUser"]);
+Route::get("/users", [UsersController::class, "getAllUsers"]);
+// Route::post('users/login', [UsersController::class, "logInAUser"]);
+Route::put('users/modify', [UsersController::class, "modifyAUser"]);
+Route::delete('users/modify', [UsersController::class, "deleteAUser"]);
+
+// Auth Routes
+
+Route::post('users/register', [AuthController::class, 'register']);
+Route::post('users/login', [AuthController::class, 'login']);
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::post('users/logout', [AuthController::class, 'logout']);
+    Route::get('users/me', [AuthController::class, 'me']);
+});

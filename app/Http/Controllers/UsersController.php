@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsersController extends Controller
 {
@@ -34,47 +35,53 @@ class UsersController extends Controller
 
     // LogIn a User
 
-    public function logInAUser(Request $request){
-        Log::info("loggin in a user");
-        try {
-            $validator = Validator::make($request -> all(), [
-               "username"=> ["required", "max:20"],
-               "steamUsername"=> ["required", "max:20"],
-               "email"=> ["required", "max:50"],
+    // public function logInAUser(Request $request){
+    //     Log::info("loggin in a user");
+    //     try {
+    //         $validator = Validator::make($request -> all(), [
+    //            "username"=> ["required", "max:20"],
+    //            "steamUsername"=> ["required", "max:20"],
+    //            "email"=> ["required", "max:50"],
 
-            ]);
+    //         ]);
 
-            if ($validator->fails()) {
-                return response([
-                    'success' => false,
-                    'message' => $validator->messages()
-                ], 400);
-            }
+    //         if ($validator->fails()) {
+    //             return response([
+    //                 'success' => false,
+    //                 'message' => $validator->messages()
+    //             ], 400);
+    //         }
 
-            $username = $request->input('username');
-            $steamUsername = $request->input('steamUsername');
-            $email = $request->input('email');
+    //         $username = $request->input('username');
+    //         $steamUsername = $request->input('steamUsername');
+    //         $email = $request->input('email');
 
-            $newUser = new User();
-            $newUser -> username = $username;
-            $newUser -> steamUsername = $steamUsername;
-            $newUser -> email = $email;
-            $newUser -> save();
+    //         $newUser = new User();
+    //         $newUser -> username = $username;
+    //         $newUser -> steamUsername = $steamUsername;
+    //         $newUser -> email = $email;
+    //         $newUser -> save();
 
-            return response([
-                'success' => true,
-                'message' => 'User created'
-            ], 200);
+    //         return response([
+    //             'success' => true,
+    //             'message' => 'User created'
+    //         ], 200);
 
-        } catch (\Throwable $th) {
-        Log::error("ERROR CREATING THE User".$th->getMessage());
+    //     } catch (\Throwable $th) {
+    //     Log::error("ERROR CREATING THE User".$th->getMessage());
 
-        return response([
-            'success' => false,
-            'message' => 'Failed to create a User'.$th->getMessage()
-        ], 500);
-        }
-    }
+    //     return response([
+    //         'success' => false,
+    //         'message' => 'Failed to create a User'.$th->getMessage()
+    //     ], 500);
+    //     }
+    // }
+
+
+
+   
+
+
 
 
     // Modify a User
