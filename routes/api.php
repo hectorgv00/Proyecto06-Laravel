@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/users", [UsersController::class, "getAllUsers"]);
 // Route::post('users/login', [UsersController::class, "logInAUser"]);
-Route::put('users/modify', [UsersController::class, "modifyAUser"]);
 Route::delete('users/modify', [UsersController::class, "deleteAUser"]);
 
 // Auth Routes
@@ -37,4 +36,5 @@ Route::group([
 ], function () {
     Route::post('users/logout', [AuthController::class, 'logout']);
     Route::get('users/me', [AuthController::class, 'me']);
+    Route::put('users/modify', [UsersController::class, "modifyAUser"]);
 });
