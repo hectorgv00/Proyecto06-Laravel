@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('from');
-            $table->foreign('from')->references('id')->on('players');
+            $table->foreign('from')->references('id')->on('users');
             
             $table->unsignedBigInteger('party');
             $table->foreign('party')->references('id')->on('parties');

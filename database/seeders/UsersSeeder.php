@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class PlayersSeeder extends Seeder
+class UsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,9 +18,9 @@ class PlayersSeeder extends Seeder
     {
         //
        
-        Log::alert("Seeders de players");
+        Log::alert("Seeders de users");
 
-        DB::table('players')->insert(
+        DB::table('users')->insert(
             [
                 [
                     "username" => "thoggan0",

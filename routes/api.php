@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PlayersController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-// Players Routes
+// Users Routes
 
-Route::get("/players",[PlayersController::class, "getAllPlayers"]);
-Route::post('players/login',[PlayersController::class, "logInAPlayer"]);
-Route::put('players/modify',[PlayersController::class, "modifyAPlayer"]);
-Route::delete('players/modify',[PlayersController::class, "deleteAPlayer"]);
+Route::get("/users",[UsersController::class, "getAllUsers"]);
+Route::post('users/login',[UsersController::class, "logInAUser"]);
+Route::put('users/modify',[UsersController::class, "modifyAUser"]);
+Route::delete('users/modify',[UsersController::class, "deleteAUser"]);

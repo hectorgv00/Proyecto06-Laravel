@@ -2,40 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Player;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class PlayersController extends Controller
+class UsersController extends Controller
 {
 
-    // Get All Players
+    // Get All Users
 
-    public function getAllPlayers(){
-        Log::info("Getting all Players");
+    public function getAllUsers(){
+        Log::info("Getting all Users");
         try {
-            $players = DB::table('players')->get();
+            $Users = DB::table('users')->get();
 
             return response([
                 'success' => true,
-                'message' => 'All players retrieved successfully',
-                'data' => $players
+                'message' => 'All Users retrieved successfully',
+                'data' => $Users
             ], 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
 
             return response([
                 'success' => false,
-                'message' => "Players' info could not be gotten"
+                'message' => "Users' info could not be gotten"
             ], 500);        }
     }
 
-    // LogIn a Player
+    // LogIn a User
 
-    public function logInAPlayer(Request $request){
-        Log::info("loggin in a player");
+    public function logInAUser(Request $request){
+        Log::info("loggin in a user");
         try {
             $validator = Validator::make($request -> all(), [
                "username"=> ["required", "max:20"],
@@ -55,32 +55,32 @@ class PlayersController extends Controller
             $steamUsername = $request->input('steamUsername');
             $email = $request->input('email');
 
-            $newPlayer = new Player();
-            $newPlayer -> username = $username;
-            $newPlayer -> steamUsername = $steamUsername;
-            $newPlayer -> email = $email;
-            $newPlayer -> save();
+            $newUser = new User();
+            $newUser -> username = $username;
+            $newUser -> steamUsername = $steamUsername;
+            $newUser -> email = $email;
+            $newUser -> save();
 
             return response([
                 'success' => true,
-                'message' => 'Player created'
+                'message' => 'User created'
             ], 200);
 
         } catch (\Throwable $th) {
-        Log::error("ERROR CREATING THE PLAYER".$th->getMessage());
+        Log::error("ERROR CREATING THE User".$th->getMessage());
 
         return response([
             'success' => false,
-            'message' => 'Failed to create a player'.$th->getMessage()
+            'message' => 'Failed to create a User'.$th->getMessage()
         ], 500);
         }
     }
 
 
-    // Modify a player
+    // Modify a User
 
-    public function modifyAPlayer(Request $request){
-        Log::info("Player Modify");
+    public function modifyAUser(Request $request){
+        Log::info("User Modify");
 
         try {
             $validator = Validator::make($request -> all(), [
@@ -105,16 +105,16 @@ class PlayersController extends Controller
 
     }
 
-    // Delete player
+    // Delete User
 
-    public function deleteAPlayer(Request $request){
+    public function deleteAUser(Request $request){
         try {
-            Log::info("Deletting a player");
+            Log::info("Deletting a User");
 
-            $playerId = $request->input("id");
+            $UserId = $request->input("id");
             
         } catch (\Throwable $th) {
-            Log::info("Trying to delete a player but something went wrong ".$th->getMessage());
+            Log::info("Trying to delete a User but something went wrong ".$th->getMessage());
         }
     }
 

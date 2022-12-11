@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('player');
-            $table->foreign('player')->references('id')->on('players');
+            $table->foreign('player')->references('id')->on('users');
 
             $table->unsignedBigInteger('party');
             $table->foreign('party')->references('id')->on('parties');

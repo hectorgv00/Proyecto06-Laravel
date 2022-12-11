@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('game')->references('id')->on('games');
             
             $table->unsignedBigInteger('owner');
-            $table->foreign('owner')->references('id')->on('players');
+            $table->foreign('owner')->references('id')->on('users');
 
             
 
