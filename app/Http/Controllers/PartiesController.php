@@ -51,7 +51,7 @@ class PartiesController extends Controller
                 "data" => $user
             ], 200);
         } catch (\Throwable $th) {
-            Log::alert("The party could not be created");
+            Log::error("The party could not be created");
 
             return response([
                 'success' => false,
@@ -75,7 +75,7 @@ class PartiesController extends Controller
                 "data" => $party
             ], 200);
         } catch (\Throwable $th) {
-            Log::alert("The parties could not be found");
+            Log::error("The parties could not be found");
 
             return response([
                 'success' => false,

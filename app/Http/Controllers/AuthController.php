@@ -74,7 +74,7 @@ class AuthController extends Controller
                 'token' => $jwt_token,
             ]);
         } catch (\Throwable $th) {
-            Log::alert("Login unsuccessfull => " . $th->getMessage());
+            Log::error("Login unsuccessfull => " . $th->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to Login a User' . $th->getMessage()
