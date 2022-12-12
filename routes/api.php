@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PartiesController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +38,5 @@ Route::group([
     Route::post('users/logout', [AuthController::class, 'logout']);
     Route::get('users/me', [AuthController::class, 'me']);
     Route::put('users/modify', [UsersController::class, "modifyAUser"]);
+    Route::post('party/create', [PartiesController::class, 'createParty']);
 });

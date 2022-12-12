@@ -57,19 +57,13 @@ class UsersController extends Controller
 
         try {
 
-
-
-
             $user = auth()->user();
-
 
             $steamUsername = ($request->steamUsername !== null) ? $request->steamUsername : $user->steamUsername;
             $username = ($request->username !== null) ? $request->username : $user->username;
 
-
             $user->username = $username;
             $user->steamUsername = $steamUsername;
-
 
             $user->save();
 
