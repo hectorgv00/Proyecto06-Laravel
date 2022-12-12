@@ -39,4 +39,5 @@ Route::group([
     Route::get('users/me', [AuthController::class, 'me']);
     Route::put('users/modify', [UsersController::class, "modifyAUser"]);
     Route::post('party/create', [PartiesController::class, 'createParty']);
+    Route::get('party/findByVideogame/{game}', [PartiesController::class, 'findPartiesByVideogame']);
 });

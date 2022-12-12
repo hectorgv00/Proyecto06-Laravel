@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Party;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class PartiesController extends Controller 
+class PartiesController extends Controller
 {
-    public function createParty(Request $request){
+
+    // Create a party
+
+    public function createParty(Request $request)
+    {
 
         Log::info("Creating a party");
 
@@ -44,18 +49,39 @@ class PartiesController extends Controller
                 'success' => true,
                 'message' => "the party has been created successfully",
                 "data" => $user
-            ], 200);        
+            ], 200);
         } catch (\Throwable $th) {
             Log::alert("The party could not be created");
 
             return response([
                 'success' => false,
-                'message' => "the party could not be created ".$th->getMessage(),
-            ], 500);   
+                'message' => "the party could not be created " . $th->getMessage(),
+            ], 500);
         }
-
-
     }
 
-   
+    // Get all parties by videogame id
+
+    public function findPartiesByVideogame($game){
+
+        Log::info("Finding the parties by videogames");
+
+        try {
+            $party = DB::select( "SELECT * FROM parties WHERE game = {$game}" );
+
+            return response([
+                'success' => true,
+                'message' => "the parties have been found",
+                "data" => $party
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::alert("The parties could not be found");
+
+            return response([
+                'success' => false,
+                'message' => "the party could not be created " . $th->getMessage(),
+            ], 500);
+        }
+
+    }
 }
