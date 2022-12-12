@@ -40,4 +40,5 @@ Route::group([
     Route::put('users/modify', [UsersController::class, "modifyAUser"]);
     Route::post('party/create', [PartiesController::class, 'createParty']);
     Route::get('party/findByVideogame/{game}', [PartiesController::class, 'findPartiesByVideogame']);
+    Route::post('party/join/', [PartiesController::class, 'joinAPartyById']);
 });

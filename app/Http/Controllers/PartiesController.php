@@ -84,4 +84,41 @@ class PartiesController extends Controller
         }
 
     }
+
+    // Join a party
+
+    public function joinAPartyById(Request $request){
+
+        Log::info("joinin a party");
+
+        try {
+            
+            $userId = auth()->user()->id;
+            $partyName = $request->name;
+            $partyId = $request->id;
+
+            $party = Party::where('name', $partyName)->where("id", $partyId)->first();
+
+            if($party===null){
+                return response([
+                    'success' => true,
+                    'message' => "the party could not be found",
+                ], 404);
+    
+            }
+
+            // $join = Party::create([
+            //     'name' => $request->get('name'),
+            //     'game' => $request->get('game'),
+            //     'owner' => $userToken->id,
+            // ]);
+
+            // $user->save();
+
+            return "$party";
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+
+    }
 }
