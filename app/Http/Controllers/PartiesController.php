@@ -107,15 +107,13 @@ class PartiesController extends Controller
     
             }
 
-            // $join = Party::create([
-            //     'name' => $request->get('name'),
-            //     'game' => $request->get('game'),
-            //     'owner' => $userToken->id,
-            // ]);
+            $party->users()->attach($userId);
 
-            // $user->save();
-
-            return "$party";
+            return response([
+                'success' => true,
+                'message' => "The user has joined the party => $partyName",
+                "data" => $party
+            ], 200);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }

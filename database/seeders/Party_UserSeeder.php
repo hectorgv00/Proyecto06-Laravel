@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class Party_PlayersSeeder extends Seeder
+class Party_UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,9 +18,9 @@ class Party_PlayersSeeder extends Seeder
     {
         //
 
-        Log::alert("Seeders de party_players");
+        Log::alert("Seeders de party_user");
 
-        DB::table('party_players')->insert(
+        DB::table('party_user')->insert(
             [
                 [
                     "player" => 1,

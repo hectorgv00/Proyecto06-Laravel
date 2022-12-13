@@ -65,4 +65,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function parties(){
+        return $this->belongsToMany(Party::class, 'party_user', 'player','party');
+    }
+    
 }

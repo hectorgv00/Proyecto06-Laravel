@@ -39,5 +39,11 @@ class Party extends Model implements JWTSubject
         return [];
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'party_user','party','player');
+    }
 
 }
+
+
