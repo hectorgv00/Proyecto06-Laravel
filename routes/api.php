@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\PartiesController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -32,13 +33,28 @@ Route::delete('users/modify', [UsersController::class, "deleteAUser"]);
 Route::post('users/register', [AuthController::class, 'register']);
 Route::post('users/login', [AuthController::class, 'login']);
 
+// Auth
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
     Route::post('users/logout', [AuthController::class, 'logout']);
     Route::get('users/me', [AuthController::class, 'me']);
     Route::put('users/modify', [UsersController::class, "modifyAUser"]);
+});
+
+// Parties
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
     Route::post('party/create', [PartiesController::class, 'createParty']);
     Route::get('party/findByVideogame/{game}', [PartiesController::class, 'findPartiesByVideogame']);
     Route::post('party/join/', [PartiesController::class, 'joinAPartyById']);
+    Route::post('party/leave/', [PartiesController::class, 'leaveAPartyById']);
+});
+
+// Messages
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::post('message/create', [MessagesController::class, 'createMessage']);
 });

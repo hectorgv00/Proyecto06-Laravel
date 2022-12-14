@@ -62,12 +62,13 @@ class PartiesController extends Controller
 
     // Get all parties by videogame id
 
-    public function findPartiesByVideogame($game){
+    public function findPartiesByVideogame($game)
+    {
 
         Log::info("Finding the parties by videogames");
 
         try {
-            $party = DB::select( "SELECT * FROM parties WHERE game = {$game}" );
+            $party = DB::select("SELECT * FROM parties WHERE game = {$game}");
 
             return response([
                 'success' => true,
@@ -82,29 +83,28 @@ class PartiesController extends Controller
                 'message' => "the party could not be created " . $th->getMessage(),
             ], 500);
         }
-
     }
 
     // Join a party
 
-    public function joinAPartyById(Request $request){
+    public function joinAPartyById(Request $request)
+    {
 
         Log::info("joinin a party");
 
         try {
-            
+
             $userId = auth()->user()->id;
             $partyName = $request->name;
             $partyId = $request->id;
 
             $party = Party::where('name', $partyName)->where("id", $partyId)->first();
 
-            if($party===null){
+            if ($party === null) {
                 return response([
                     'success' => true,
                     'message' => "the party could not be found",
                 ], 404);
-    
             }
 
             $party->users()->attach($userId);
@@ -117,6 +117,39 @@ class PartiesController extends Controller
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
+    }
 
+    // Leave a party
+
+    public function leaveAPartyById(Request $request)
+    {
+
+        Log::info("leaving a party");
+
+        try {
+
+            $userId = auth()->user()->id;
+            $partyName = $request->name;
+            $partyId = $request->id;
+
+            $party = Party::where('name', $partyName)->where("id", $partyId)->first();
+
+            if ($party === null) {
+                return response([
+                    'success' => true,
+                    'message' => "the party could not be found",
+                ], 404);
+            }
+
+            $party->users()->detach($userId);
+
+            return response([
+                'success' => true,
+                'message' => "The user has left the party => $partyName",
+                "data" => $party
+            ], 200);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
 }
