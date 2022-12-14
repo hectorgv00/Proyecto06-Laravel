@@ -152,4 +152,59 @@ class PartiesController extends Controller
             return $th->getMessage();
         }
     }
+
+    // getMessagesFromAParty
+
+    public function getMessagesFromAParty($id)
+    {
+        Log::info("getting messages from {$id}");
+
+        try {
+
+            $userId = auth()->user()->id;
+            $partyId = $id;
+
+            $party = DB::select(            
+            "SELECT parties.id, parties.name ,parties.game ,parties.owner ,users.id , users.username, users.steamUsername, users.email 
+            FROM parties
+            JOIN party_user on parties.id = party_user.party
+            JOIN users on users.id = party_user.player
+            WHERE parties.id = {$partyId} AND users.id = {$userId}");
+
+
+        if ($party === []) {
+            return response([
+                'success' => true,
+                'message' => "the party could not be found or the user that is trying to send a message is not in the party",
+            ], 404);
+        }
+
+
+            $messages = DB::select(
+            "SELECT messages.id,messages.from,messages.party,messages.message,messages.created_at,parties.id 
+            FROM messages
+            JOIN parties on parties.id = messages.party
+            WHERE parties.id = {$partyId}"
+            );
+
+            if ($party === null) {
+                return response([
+                    'success' => true,
+                    'message' => "the party could not be found",
+                ], 404);
+            }
+
+            return response([
+                'success' => true,
+                "data" => $messages
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::info("could not get messages from {$id}" . $th);
+
+            return response([
+                'success' => false,
+                'message' => "the messages could not be gotten " . $th->getMessage(),
+            ], 500);
+        }
+    }
 }

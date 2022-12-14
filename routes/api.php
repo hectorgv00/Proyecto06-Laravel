@@ -48,6 +48,7 @@ Route::group([
 ], function () {
     Route::post('party/create', [PartiesController::class, 'createParty']);
     Route::get('party/findByVideogame/{game}', [PartiesController::class, 'findPartiesByVideogame']);
+    Route::get('party/{name}', [PartiesController::class, 'getMessagesFromAParty']);
     Route::post('party/join/', [PartiesController::class, 'joinAPartyById']);
     Route::post('party/leave/', [PartiesController::class, 'leaveAPartyById']);
 });

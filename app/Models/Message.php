@@ -15,4 +15,13 @@ class Message extends Model
         'from',
         'date',
     ];
+
+
+
+
+
+
+    public function parties(){
+        return $this-> hasOne(Party::class);
+    }
 }

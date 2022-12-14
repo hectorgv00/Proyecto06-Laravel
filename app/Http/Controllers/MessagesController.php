@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\Party;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,7 +13,8 @@ class MessagesController extends Controller
 {
     //
 
-    public function createMessage(Request $request){
+    public function createMessage(Request $request)
+    {
 
         Log::info("Creating a message");
 
@@ -21,27 +23,26 @@ class MessagesController extends Controller
                 'message' => 'required|string|max:255',
                 'party' => 'required',
             ]);
-    
+
             if ($validator->fails()) {
                 return response([
                     'success' => false,
                     'message' => $validator->messages()
                 ], 400);
             }
-    
+
             $userId = auth()->user()->id;
             $partyName = $request->name;
             $partyId = $request->party;
             $requestedMessage = $request->message;
-    
-            $party =Party:: 
-            // where('name', $partyName)->where("id", $partyId)->first();
-            select('parties.id', 'parties.name', 'parties.game', 'parties.owner')
-                ->with('users:id,username,steamUsername,email')
-                ->where('parties.id', $partyId)
-                ->find($userId);
 
-                
+            $party = DB::select(
+            "SELECT parties.id, parties.name ,parties.game ,parties.owner ,users.id , users.username, users.steamUsername, users.email 
+            FROM parties
+            JOIN party_user on parties.id = party_user.party
+            JOIN users on users.id = party_user.player
+            WHERE parties.id = {$partyId} AND users.id = {$userId}"
+            );
 
 
             if ($party === null) {
@@ -51,8 +52,6 @@ class MessagesController extends Controller
                 ], 404);
             }
 
-
-    
             $message = Message::create([
                 'party' => $partyId,
                 'message' => $requestedMessage,
@@ -67,7 +66,6 @@ class MessagesController extends Controller
                 'message' => "the message has been created successfully =>",
                 "data" => $message
             ], 200);
-            
         } catch (\Throwable $th) {
             Log::error("The message could not be created");
 
@@ -76,6 +74,5 @@ class MessagesController extends Controller
                 'message' => "the message could not be created " . $th->getMessage(),
             ], 500);
         }
-
     }
 }
