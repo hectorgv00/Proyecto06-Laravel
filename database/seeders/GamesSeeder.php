@@ -26,27 +26,32 @@ class GamesSeeder extends Seeder
                 [
                     "title" => "Rocket league",
                     "thumbnail_url" => "aaaa",
-                    "url" => "bbbb"
+                    "url" => "bbbb",
+                    "createdBy" => 1,
                 ],
                 [
                     "title" => "League of legends",
                     "thumbnail_url" => "aaaa",
-                    "url" => "bbbb"
+                    "url" => "bbbb",
+                    "createdBy" => 1,
                 ],
                 [
                     "title" => "World of Warcraft",
                     "thumbnail_url" => "aaaa",
-                    "url" => "bbbb"
+                    "url" => "bbbb",
+                    "createdBy" => 1,
                 ],
                 [
                     "title" => "FIFA",
                     "thumbnail_url" => "aaaa",
-                    "url" => "bbbb"
+                    "url" => "bbbb",
+                    "createdBy" => 1,
                 ],
                 [
                     "title" => "The Binding of Isaac",
                     "thumbnail_url" => "aaaa",
-                    "url" => "bbbb"
+                    "url" => "bbbb",
+                    "createdBy" => 1,
                 ],
             ]
         );
