@@ -37,7 +37,7 @@ class MessagesController extends Controller
             $requestedMessage = $request->message;
 
             $party = DB::select(
-            "SELECT parties.id, parties.name ,parties.game ,parties.owner ,users.id , users.username, users.steamUsername, users.email 
+                "SELECT parties.id, parties.name ,parties.game ,parties.owner ,users.id , users.username, users.steamUsername, users.email 
             FROM parties
             JOIN party_user on parties.id = party_user.party
             JOIN users on users.id = party_user.player
@@ -74,5 +74,54 @@ class MessagesController extends Controller
                 'message' => "the message could not be created " . $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function deleteAMessage(Request $request)
+    {
+        Log::info("Deleting a message");
+
+
+        try {
+            $userIdToken = auth()->user()->id;
+
+            $userId = $request->input("id");
+            $messageId = $request->input("messageId");
+
+            
+            $message = Message::find($messageId);
+            
+            if ($userIdToken !== $userId || $message->id !== $userIdToken) {
+                return response([
+                    'success' => false,
+                    'message' => "You can only delete your messages"
+                ], 401);
+            }
+            
+            if (!$message) {
+                response([
+                    'success' => true,
+                    'message' => "The message could not be found"
+                ], 404);
+            }
+
+            $message->delete();
+
+            return response([
+                'success' => true,
+                'message' => "You have deleted your message",
+                "data" => $message
+            ], 401);
+        } catch (\Throwable $th) {
+            Log::error("Trying to delete a Message but something went wrong " . $th->getMessage());
+
+            response([
+                'success' => false,
+                'message' => "Message could not be deleted => " . $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function modifyAMessage()
+    {
     }
 }

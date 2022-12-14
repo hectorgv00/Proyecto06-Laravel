@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Route;
 // Users Routes
 
 Route::get("/users", [UsersController::class, "getAllUsers"]);
-// Route::post('users/login', [UsersController::class, "logInAUser"]);
-Route::delete('users/modify', [UsersController::class, "deleteAUser"]);
 
 // Auth Routes
 
@@ -37,6 +35,7 @@ Route::post('users/login', [AuthController::class, 'login']);
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
+    Route::delete('users/delete', [UsersController::class, "deleteAUser"]);
     Route::post('users/logout', [AuthController::class, 'logout']);
     Route::get('users/me', [AuthController::class, 'me']);
     Route::put('users/modify', [UsersController::class, "modifyAUser"]);
@@ -58,4 +57,7 @@ Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
     Route::post('message/create', [MessagesController::class, 'createMessage']);
+    Route::delete('message/delete', [MessagesController::class, "deleteAMessage"]);
+    Route::put('message/modify', [MessagesController::class, "modifyAMessage"]);
+
 });

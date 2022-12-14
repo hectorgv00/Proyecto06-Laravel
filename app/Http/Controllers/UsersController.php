@@ -40,12 +40,45 @@ class UsersController extends Controller
 
     public function deleteAUser(Request $request)
     {
+        Log::info("Deletting a User");
         try {
-            Log::info("Deletting a User");
 
-            $UserId = $request->input("id");
+            $userIdToken = auth()->user()->id;
+
+            $userId = $request->input("id");
+
+            if($userIdToken !== $userId){
+                return response([
+                    'success' => false,
+                    'message' => "You can only delete your account"
+                ], 401);
+            }
+
+            $user = User::find($userId);
+
+
+            if(!$user){
+                response([
+                    'success' => true,
+                    'message' => "The user could not be found"
+                ], 404);
+            }
+
+            $user->delete();
+
+            return response([
+                'success' => true,
+                'message' => "You have deleted your account",
+                "data" => $user
+            ], 401);
+
         } catch (\Throwable $th) {
             Log::info("Trying to delete a User but something went wrong " . $th->getMessage());
+
+            response([
+                'success' => false,
+                'message' => "Users could not be deleted => ".$th->getMessage()
+            ], 500);
         }
     }
 
