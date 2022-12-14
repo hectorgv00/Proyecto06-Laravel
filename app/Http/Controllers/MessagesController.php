@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class MessagesController extends Controller
 {
@@ -87,16 +88,16 @@ class MessagesController extends Controller
             $userId = $request->input("id");
             $messageId = $request->input("messageId");
 
-            
+
             $message = Message::find($messageId);
-            
+
             if ($userIdToken !== $userId || $message->id !== $userIdToken) {
                 return response([
                     'success' => false,
                     'message' => "You can only delete your messages"
                 ], 401);
             }
-            
+
             if (!$message) {
                 response([
                     'success' => true,
@@ -121,7 +122,49 @@ class MessagesController extends Controller
         }
     }
 
-    public function modifyAMessage()
+    public function modifyAMessage(Request $request)
     {
+        Log::info("Updating a message");
+        try {
+            $userIdToken = auth()->user()->id;
+    
+            $userId = $request->input("id");
+            $messageId = $request->input("messageId");
+    
+            $message = Message::find($messageId);
+    
+            if ($userIdToken !== $userId || $message->from !== $userIdToken) {
+                return response([
+                    'success' => false,
+                    'message' => "You can only update your messages"
+                ], 401);
+            }
+    
+            if (!$message) {
+                response([
+                    'success' => true,
+                    'message' => "The message could not be found"
+                ], 404);
+            }    
+
+            $input = array_filter($request->all());
+            $message->update($input);
+            $messageResponse = Message::find($messageId);
+
+
+            return response([
+                'success' => true,
+                'message' => "You have updated your message",
+                "data" => $messageResponse
+            ], 401);
+
+        } catch (\Throwable $th) {
+            Log::error("Trying to update a Message but something went wrong " . $th->getMessage());
+
+            response([
+                'success' => false,
+                'message' => "Message could not be updated => " . $th->getMessage()
+            ], 500);        }
+        
     }
 }
