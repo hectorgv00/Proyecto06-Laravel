@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GamesController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\PartiesController;
 use App\Http\Controllers\UsersController;
@@ -59,5 +60,15 @@ Route::group([
     Route::post('message/create', [MessagesController::class, 'createMessage']);
     Route::delete('message/delete', [MessagesController::class, "deleteAMessage"]);
     Route::put('message/modify', [MessagesController::class, "modifyAMessage"]);
+
+});
+
+// Games 
+Route::group([
+    'middleware' => ['jwt.auth', 'isSuperAdmin']
+], function () {
+    Route::post('game/create', [GamesController::class, 'createAGame']);
+    // Route::delete('message/delete', [MessagesController::class, "deleteAMessage"]);
+    // Route::put('message/modify', [MessagesController::class, "modifyAMessage"]);
 
 });
